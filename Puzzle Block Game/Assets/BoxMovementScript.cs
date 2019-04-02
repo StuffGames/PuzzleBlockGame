@@ -8,7 +8,9 @@ public class BoxMovementScript : MonoBehaviour
     Transform playerT;
 
     private Vector3 pos;
-    private float speed = 0.125f;
+    private Vector3 velTemp = Vector3.zero;
+    public float speed = 0.125f;
+    private bool buttonActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,15 @@ public class BoxMovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D) && playerT.position == pos)
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+
+        if (moveX == 0)
+        {
+            buttonActive = false;
+        }
+
+        /*if (Input.GetKeyDown(KeyCode.D) && playerT.position == pos)
         {
             pos += Vector3.right;
         }
@@ -35,8 +45,26 @@ public class BoxMovementScript : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.S) && playerT.position == pos)
         {
             pos += Vector3.down;
+        }*/
+        if (moveX == 1 && playerT.position == pos)
+        {
+            if (buttonActive == false)
+            {
+                buttonActive = true;
+                pos += new Vector3(moveX, 0);
+            }
+        }
+        else if (moveX == -1 && playerT.position == pos)
+        {
+            if (buttonActive == false)
+            {
+                buttonActive = true;
+                pos += new Vector3(moveX, 0);
+            }
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);
+        transform.position = Vector3.SmoothDamp(playerT.position, pos, ref velTemp, speed);
+
+        //transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);
     }
 }
