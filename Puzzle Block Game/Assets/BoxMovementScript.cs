@@ -9,7 +9,7 @@ public class BoxMovementScript : MonoBehaviour
 
     Transform playerT;
 
-    public BoxCollider2D wallCollider;
+    public EdgeCollider2D wallCollider;
     private Vector3 pos;
     private Vector3 velTemp = Vector3.zero;
     public float speed = 0.125f;
