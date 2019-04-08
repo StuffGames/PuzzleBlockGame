@@ -9,22 +9,28 @@ public class BoxMovementScript : MonoBehaviour
 
     Transform playerT;
 
-    public EdgeCollider2D wallCollider;
+    public LayerMask wallCollider;
+    public LayerMask pushingBlock;
+    //public EdgeCollider2D wallCollider;
     private Vector3 pos;
     private Vector3 velTemp = Vector3.zero;
     public float speed = 0.125f;
-    private bool buttonActive = false;
+    //private bool buttonActive = false;
     private bool isTouchingTop = false;
     private bool isTouchingRight = false;
     private bool isTouchingBottom = false;
     private bool isTouchingLeft = false;
+
+    private bool isPushingUp = false;
+    private bool isPushingRight = false;
+    private bool isPushingDown = false;
+    private bool isPushingLeft = false;
 
     private CircleCollider2D topCollider;
     private CircleCollider2D rightCollider;
     private CircleCollider2D bottomCollider;
     private CircleCollider2D leftCollider;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerT = transform;
@@ -46,7 +52,6 @@ public class BoxMovementScript : MonoBehaviour
         leftCollider = playerColliders[3];
     }
 
-    // Update is called once per frame
     void Update()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -98,10 +103,23 @@ public class BoxMovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isTouchingTop = Physics2D.IsTouching(topCollider, wallCollider);
-        isTouchingRight = Physics2D.IsTouching(rightCollider, wallCollider);
-        isTouchingBottom = Physics2D.IsTouching(bottomCollider, wallCollider);
-        isTouchingLeft = Physics2D.IsTouching(leftCollider, wallCollider);
+
+        isTouchingTop = Physics2D.IsTouchingLayers(topCollider, wallCollider);
+        isTouchingRight = Physics2D.IsTouchingLayers(rightCollider, wallCollider);
+        isTouchingBottom = Physics2D.IsTouchingLayers(bottomCollider, wallCollider);
+        isTouchingLeft = Physics2D.IsTouchingLayers(leftCollider, wallCollider);
+
+        isPushingUp = Physics2D.IsTouchingLayers(topCollider, pushingBlock);
+        isPushingRight = Physics2D.IsTouchingLayers(rightCollider, pushingBlock);
+        isPushingDown = Physics2D.IsTouchingLayers(bottomCollider, pushingBlock);
+        isPushingLeft = Physics2D.IsTouchingLayers(leftCollider, pushingBlock);
     }
 
+    /*void BoxEdgeColliders(bool whatBool, LayerMask whatLayer)
+    {
+        isTouchingTop = Physics2D.IsTouchingLayers(topCollider, whatLayer);
+        isTouchingRight = Physics2D.IsTouchingLayers(rightCollider, whatLayer);
+        isTouchingBottom = Physics2D.IsTouchingLayers(bottomCollider, whatLayer);
+        isTouchingLeft = Physics2D.IsTouchingLayers(leftCollider, whatLayer);
+    }*/
 }
